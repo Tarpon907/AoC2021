@@ -4,26 +4,46 @@ import numpy as np
 import re
 import time
 
-start_time = time.time()
+start_time = time.process_time()
 
 lines = open('c:/users/ted/AoC2021/Day15/input.txt', 'r').readlines()
 
-height = len(lines)
-width = len(lines[0].strip())
+original_height = len(lines)
+original_width = len(lines[0].strip())
 
-risk = np.ndarray((height,width),dtype=int)
+height = original_height * 5
+width = original_width * 5
+
+risk = np.zeros((height,width),dtype=int)
 dijkstra = np.full((height,width),fill_value=1000000000000)
 minmatrix = np.full((height,width),fill_value=1000000000000)
 # unvisited = []
 visited = np.full((height,width),fill_value=False)
 total_nodes = width * height
 
+# initial read
 for i in range(len(lines)):
     line = lines[i].strip()
     for j in range(len(lines)):
         risk[i][j] = int(line[j])
 #        unvisited.append([i,j])
-#print (risk)
+
+# duplicate first original_height lines horizontally fist 
+for i in range(original_height):
+    for j in range(original_width,width):
+        newval = risk[i][j-original_width]+1
+        if newval > 9:
+            newval -= 9
+        risk[i][j] = newval
+
+# now duplicated downward
+for i in range(original_height,height):
+    for j in range(height):
+        newval = risk[i-original_height][j]+1
+        if newval > 9:
+            newval -= 9
+        risk[i][j] = newval
+
 
 dijkstra[0][0] = 0
 
@@ -102,4 +122,4 @@ print(dijkstra[height-1,width-1])
 
 
 
-print("execution time (in ms): ",(time.time()-start_time)*1000) 
+print("execution time (in ms): ",(time.process_time()-start_time)*1000) 
