@@ -32,9 +32,11 @@ maxmax = 0
 maxmaxes = []
 hitcount = 0
 points = []
+tries = 0
 for x0 in range(min(possible_Vx),target_max_x+1):
     for y0 in range(target_min_y,1000):
  #       print ("trying", x0,y0)
+        tries += 1
         xpos = ypos = 0
         Vy = y0
         Vx = x0
@@ -62,9 +64,11 @@ points.sort()
 for i in points:
     print(i)
 print("hits:", hitcount)
+print("tries:", tries)
 
     
         
 
 
 
+print("execution time (in ms): ",(time.process_time()-start_time)*1000) 
